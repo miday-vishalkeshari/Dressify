@@ -26,7 +26,7 @@ def scrape_and_store_products_myntra(url, collection_name):
 
     counter = 0
     for product in products:
-        if counter >= 7:
+        if counter >= 8:
             break
 
         brand_tag = product.find("h3", {"class": "product-brand"})
