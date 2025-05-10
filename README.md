@@ -16,3 +16,12 @@ git commit -m "first commit"
 git branch -M main
 git remote add origin https://github.com/miday-vishalkeshari/Dressify.git
 git push -u origin main
+
+
+
+
+
+============================================================================================================================================================
+to count number of lines of code:
+
+Get-ChildItem -Recurse -Include *.kt,*.java,*.xml | Get-Content | Measure-Object -Line

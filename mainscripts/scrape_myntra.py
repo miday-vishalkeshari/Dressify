@@ -16,10 +16,11 @@ db = firestore.client()
 def scrape_and_store_products_myntra(url, collection_name):
     options = Options()
     options.headless = True
+    options.add_argument("--log-level=3")  # Suppress warnings and errors
     driver = webdriver.Chrome(options=options)
 
     driver.get(url)
-    time.sleep(5)  # wait for JS to render content fervre
+    time.sleep(5)  # wait for JS to render content
 
     soup = BeautifulSoup(driver.page_source, "html.parser")
     products = soup.find_all("li", {"class": "product-base"})
@@ -53,11 +54,11 @@ def scrape_and_store_products_myntra(url, collection_name):
         else:
             link = "No Link"
 
-        # Visit the product page to collect all images
+        # Visit the product page to collect all images and color
         driver.get(link)
         time.sleep(5)  # wait for the page to load
 
-        # Scraping the product's detailed page for image URLs
+        # Scraping the product's detailed page for image URLs and color
         detailed_page_soup = BeautifulSoup(driver.page_source, "html.parser")
         image_divs = detailed_page_soup.find_all("div", {"class": "image-grid-image"})
         image_urls = []
@@ -67,6 +68,30 @@ def scrape_and_store_products_myntra(url, collection_name):
             match = re.search(r'url\("([^"]+)"\)', style)
             if match:
                 image_urls.append(match.group(1))
+
+        # Extract color information
+        color_tag = detailed_page_soup.find("span", {"class": "pdp-color-name"})  # Update this selector if needed
+        if not color_tag:
+            # Try alternative methods if the primary selector fails
+            color_tag = detailed_page_soup.find("div", {"class": "alternative-class-name"})  # Replace with actual class
+        color = color_tag.text.strip() if color_tag else "No Color"
+
+        # Extract color options
+        color_options = []
+        color_div = detailed_page_soup.find("div")  # Locate the parent div containing color options
+        if color_div:
+            color_links = color_div.find_all("a", {"title": True})  # Find all <a> tags with a "title" attribute
+            for link in color_links:
+                color_name = link.get("title", "").strip()  # Extract the color name from the "title" attribute
+                if color_name:
+                    color_options.append(color_name)
+
+        # If no colors are found, default to "No Color"
+        if not color_options:
+            color_options = ["No Color"]
+
+        # Print the extracted colors
+        print(f"Available Colors: {color_options}")
 
         # Print details in terminal
         print(f"Product {counter+1}:")
@@ -80,15 +105,16 @@ def scrape_and_store_products_myntra(url, collection_name):
         print("-" * 80)
 
         # Uncomment this to save to Firestore
-        db.collection(collection_name).add({
-            "brand": brand,
-            "product_name": product_name,
-            "price": price,
-            "original_price": original_price,
-            "discount": discount,
-            "image_urls": image_urls,  # Store multiple image URLs as a list
-            "link": link
-        })
+        # db.collection(collection_name).add({
+        #     "brand": brand,
+        #     "product_name": product_name,
+        #     "price": price,
+        #     "original_price": original_price,
+        #     "discount": discount,
+        #     "colors": color_options,  # Store the list of available colors
+        #     "image_urls": image_urls,
+        #     "link": link
+        # })
 
         counter += 1
 
@@ -108,10 +134,10 @@ trousers_url = "https://www.myntra.com/men-trousers"
 
 # Scrape and store products for each category
 scrape_and_store_products_myntra(pants_url, "pants")
-scrape_and_store_products_myntra(tshirts_url, "tshirts")
-scrape_and_store_products_myntra(casual_shirts_url, "casual_shirts")
-scrape_and_store_products_myntra(formal_shirts_url, "formal_shirts")
-scrape_and_store_products_myntra(jeans_url, "jeans")
-scrape_and_store_products_myntra(track_pants_url, "track_pants")
-scrape_and_store_products_myntra(shorts_url, "shorts")
-scrape_and_store_products_myntra(trousers_url, "trousers")
+# scrape_and_store_products_myntra(tshirts_url, "tshirts")
+# scrape_and_store_products_myntra(casual_shirts_url, "casual_shirts")
+# scrape_and_store_products_myntra(formal_shirts_url, "formal_shirts")
+# scrape_and_store_products_myntra(jeans_url, "jeans")
+# scrape_and_store_products_myntra(track_pants_url, "track_pants")
+# scrape_and_store_products_myntra(shorts_url, "shorts")
+# scrape_and_store_products_myntra(trousers_url, "trousers")
