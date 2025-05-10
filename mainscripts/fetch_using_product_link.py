@@ -24,6 +24,32 @@ def scrape_and_store_products_myntra(url):
             time.sleep(3)  # Wait for the product page to load
             product_soup = BeautifulSoup(driver.page_source, "html.parser")
             
+            # Extract product details
+            try:
+                brand = product_soup.find("h1", {"class": "pdp-title"}).text.strip()
+            except AttributeError:
+                brand = "N/A"
+
+            try:
+                product_name = product_soup.find("h1", {"class": "pdp-name"}).text.strip()
+            except AttributeError:
+                product_name = "N/A"
+
+            try:
+                price = product_soup.find("span", {"class": "pdp-price"}).text.strip()
+            except AttributeError:
+                price = "N/A"
+
+            try:
+                original_price = product_soup.find("span", {"class": "pdp-mrp"}).text.strip()
+            except AttributeError:
+                original_price = "N/A"
+
+            try:
+                discount = product_soup.find("span", {"class": "pdp-discount"}).text.strip()
+            except AttributeError:
+                discount = "N/A"
+
             # Find all divs with class "image-grid-image" inside "image-grid-col50"
             parent_divs = product_soup.find_all("div", {"class": "image-grid-col50"})
             image_urls = []
@@ -37,11 +63,17 @@ def scrape_and_store_products_myntra(url):
                         end = style_attr.find(")", start)
                         image_url = style_attr[start:end].strip('"').strip("'")
                         image_urls.append(image_url)
+
+            # Print product details
+            print(f"Product Details:")
+            print(f"  Brand: {brand}")
+            print(f"  Name: {product_name}")
+            print(f"  Price: {price}")
+            print(f"  Original Price: {original_price}")
+            print(f"  Discount: {discount}")
+            print(f"  Image URLs: {image_urls}")
         else:
-            image_urls = []
-        
-        # Print only the image URLs
-        print(f"Image URLs: {image_urls}")
+            print("No Link provided.")
 
     finally:
         driver.quit()
