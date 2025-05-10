@@ -1,18 +1,3 @@
-Pro Tips:
-Undertones Matter:
-
-Warm (yellow/golden): Opt for earthy reds, oranges, olive.
-
-Cool (pink/blue): Choose blues, pinks, jewel tones.
-
-Neutral: Experiment with both!
-
-Metallics: Gold suits warm undertones; silver flatters cool undertones.
-
-Experiment: Personal preference and confidence matter most!
-
-
-====================================================================================
 
 Bright Accents and Soft Neutrals are just categories to help you build outfits with the right balance of contrast and harmony for your skin tone:
 
@@ -44,11 +29,11 @@ How to Combine Them
 
 Color‑Pairing Rules (color theory)
 
-Complementary: opposite on the wheel (e.g. blue ↔ orange)
+        Complementary: opposite on the wheel (e.g. blue ↔ orange)
 
-Analogous: adjacent (e.g. teal → turquoise → blue)
+        Analogous: adjacent (e.g. teal → turquoise → blue)
 
-Triadic: evenly spaced (e.g. red → yellow → blue)
+        Triadic: evenly spaced (e.g. red → yellow → blue)
 
 You can pre‑compute a small lookup for each palette color:
 
