@@ -12,7 +12,7 @@ firebase_admin.initialize_app(cred)
 db = firestore.client()
 
 # Function to scrape product data and store it into Firestore
-def scrape_and_store_products_myntra(url):
+def scrape_and_store_products_myntra(url, collection_path):
     options = Options()
     options.headless = True
     options.add_argument("--log-level=3")  # Suppress warnings and errors
@@ -64,14 +64,22 @@ def scrape_and_store_products_myntra(url):
                         image_url = style_attr[start:end].strip('"').strip("'")
                         image_urls.append(image_url)
 
-            # Print product details
-            print(f"Product Details:")
-            print(f"  Brand: {brand}")
-            print(f"  Name: {product_name}")
-            print(f"  Price: {price}")
-            print(f"  Original Price: {original_price}")
-            print(f"  Discount: {discount}")
-            print(f"  Image URLs: {image_urls}")
+            # Prepare data to store in Firestore
+            product_data = {
+                "brand": brand,
+                "product_name": product_name,
+                "price": price,
+                "original_price": original_price,
+                "discount": discount,
+                "image_urls": image_urls,
+                "link": url
+            }
+
+            # Store data in Firestore
+            doc_ref = db.collection(collection_path).document()
+            doc_ref.set(product_data)
+
+            print(f"Product stored successfully in Firestore: {product_name}")
         else:
             print("No Link provided.")
 
@@ -86,13 +94,14 @@ def read_product_links_from_csv(file_path):
     return df["ProductLink"].tolist()
 
 # Function to scrape and process products from CSV links
-def scrape_products_from_csv(file_path):
+def scrape_products_from_csv(file_path, collection_path):
     product_links = read_product_links_from_csv(file_path)
     for idx, url in enumerate(product_links):
         print(f"Scraping Product {idx + 1}: {url}")
-        scrape_and_store_products_myntra(url)
+        scrape_and_store_products_myntra(url, collection_path)
 
 # Run the scraping process
 if __name__ == "__main__":
-    file_path = "product_links.csv"  # Path to your CSV file containing product links
-    scrape_products_from_csv(file_path)
+    file_path = "product_links_white_mentshirts.csv"  # Path to your CSV file containing product links
+    collection_path = "Dressify_styles/tshirts/white"  # Firestore collection path
+    scrape_products_from_csv(file_path, collection_path)
