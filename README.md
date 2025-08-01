@@ -37,5 +37,18 @@ Dressify aims to enhance personal styling by providing intelligent clothing sugg
 3. **Color Coordination**: If a user selects a specific upperwear (e.g., blue shirt), Dressify suggests matching bottomwear (e.g., black jeans).
 4. **LLM Reasoning**: An LLM generates natural language explanations and styling tips.
 5. **Output**: The user receives a complete outfit recommendation with matching items.
+---
+
+## 📸 Screenshots
+
+Here are some previews of the Dressify app in action:
+
+![Media (4)](https://github.com/user-attachments/assets/7842d98d-2165-425e-952a-03a4aa89ca72)
+![Media (6)](https://github.com/user-attachments/assets/1c391c67-d5c8-4bd1-aee5-38ad409e00fb)
+![Media (3)](https://github.com/user-attachments/assets/81df2a28-7a24-4516-b591-6075baad5503)
+![Media (1)](https://github.com/user-attachments/assets/ed334c5a-b677-4ddd-b1a4-124d546708f3)
+![Media (2)](https://github.com/user-attachments/assets/ebf82549-b186-4519-ac60-3ef31b53032c)
+![Media](https://github.com/user-attachments/assets/a277ea26-fe6e-4e3a-a259-8dc73263453b)  ![Media (5)](https://github.com/user-attachments/assets/0ecc2cd6-cb0e-424d-9175-e387a9dc86c2)
+
 
 
